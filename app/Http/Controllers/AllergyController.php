@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 use App\Models\Allergy;
+use App\Models\AllergyPerPerson;
+use App\Models\Person;
 use Illuminate\Support\Facades\DB;
 
 use Illuminate\Http\Request;
@@ -119,25 +121,34 @@ public function allergyDetails($id){
 
     public function update(Request $request, $id)
     {
-    {
+        // Validate the incoming request data
+        $validatedData = $request->validate([
+            'allergy' => 'required|exists:allergies,id',
+        ]);
+
+        // Perform database operations inside a transaction
+        DB::transaction(function () use ($validatedData, $id) {
+            // Find the allergy for the selected ID
+            $allergy = Allergy::findOrFail($validatedData['allergy']);
+            $persoonId = $id;
+
+            // Update the allergy for the person
+            $allergiePerPersoon = AllergyPerPerson::where('person_id', $persoonId)->firstOrFail();
+            $allergiePerPersoon->allergy_id = $validatedData['allergy'];
+            $allergiePerPersoon->save();
+        });
+
+        // Get the FamilyId for the person
+        $familyId = Person::where('id', $id)->value('FamilyId');
+
+        // Redirect to the family detail page
+        return redirect()->route('family.detail', ['id' => $familyId])
+            ->with('success', 'De wijziging is doorgevoerd');
     
-        // Update the allergy name based on the selected allergy ID
-        $allergy = DB::table('allergies')->where('id', $request->allergy)->first();
-
-        if ($allergy) {
-            DB::table('allergy_per_person')
-            ->where('person_id', $id)
-            ->update([
-                'allergy_id' => $request->allergy,
-            ]);
-
-            return redirect()->route('family.detail', ['id' => $id])->with('success', 'Allergy updated successfully');
-        } else {
-            return redirect()->back()->with('error', 'Selected allergy not found');
-        }
     }
-    }
-    
-
-    
 }
+    
+    
+
+    
+

@@ -7,5 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class AllergyPerPerson extends Model
 {
-    use HasFactory;
+    protected $table = 'allergy_per_person';
+        use HasFactory;
 }

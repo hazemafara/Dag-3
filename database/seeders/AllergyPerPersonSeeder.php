@@ -26,7 +26,7 @@ class AllergyPerPersonSeeder extends Seeder
             ['person_id' => 13, 'allergy_id' => 4],
             ['person_id' => 14, 'allergy_id' => 1],
             ['person_id' => 15, 'allergy_id' => 3],
-            ['person_id' => 16, 'allergy_id' => 4],
+            ['person_id' => 16, 'allergy_id' => 5],
             ['person_id' => 17, 'allergy_id' => 1],
             ['person_id' => 17, 'allergy_id' => 2],
             ['person_id' => 18, 'allergy_id' => 4],

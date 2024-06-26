@@ -3,24 +3,24 @@
 
 <div class="container mt-4">
     <h2>Edit Allergy</h2>
-    <form action="{{ route('allergy.update', $allergy->id) }}" method="POST">
-        @csrf
-        @method('PUT')
-        
-        <div class="form-group">
-            <label for="allergy">Select Allergy:</label>
-            <select name="allergy" id="allergy" class="form-control">
-                @foreach ($allergies as $allergyOption)
-                    <option value="{{ $allergyOption->id }}" 
-                            {{ $allergyOption->id == $allergy->id ? 'selected' : '' }}>
-                        {{ $allergyOption->Name }}
-                    </option>
-                @endforeach
-            </select>
-        </div>  
+   <form action="{{ route('allergy.update', $person->id) }}" method="POST">
+    @csrf
+    @method('PUT')
+    
+    <div class="form-group">
+        <label for="allergy">Select Allergy:</label>
+        <select name="allergy" id="allergy" class="form-control">
+            @foreach ($allergies as $allergyOption)
+                <option value="{{ $allergyOption->id }}" 
+                        {{ $allergyOption->id == $allergy->id ? 'selected' : '' }}>
+                    {{ $allergyOption->Name }}
+                </option>
+            @endforeach
+        </select>
+    </div>  
 
-        <button type="submit" class="btn btn-primary">Save Changes</button>
-    </form>
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+</form>
 </div>
 
 <!-- Include Bootstrap JS in your layout file (optional) -->
