@@ -80,6 +80,7 @@ public function allergyDetails($id){
                 'families.name as FamilyName',
                 'families.description as FamilyDescription',
                 'families.total_amount_people as TotalPeople',
+                'people.id as personId',
                 'people.FirstName as PersonFirstName',
                 'people.LastName as PersonLastName',
                 'people.PersonType as PersonType',
@@ -89,12 +90,53 @@ public function allergyDetails($id){
             ->leftJoin('people', 'families.id', '=', 'people.FamilyId')
             ->leftJoin('allergy_per_person', 'people.id', '=', 'allergy_per_person.person_id')
             ->leftJoin('allergies', 'allergy_per_person.allergy_id', '=', 'allergies.id')
-            ->where('families.id', $id) // Filter by specific family ID
+            ->where('families.id', $id)
             ->orderBy('families.name')
             ->get();
 
 
         return view('details', ['allergyDetails' => $allergyDetails]);}
+
+    public function edit($id)
+    {
+        // Assuming $id is the personId passed in the route
+        $person = DB::table('people')->where('id', $id)->first();
+
+        if (!$person) {
+            return redirect()->route('family.index')->with('error', 'Person not found');
+        }
+
+        $allergy = DB::table('allergy_per_person')
+        ->join('allergies', 'allergy_per_person.allergy_id', '=', 'allergies.id')
+        ->where('allergy_per_person.person_id', $id)
+            ->select('allergies.*')
+            ->first();
+
+        $allergies = Allergy::all();
+
+        return view('allergies.edit', compact('allergy', 'allergies', 'person'));   
+    }
+
+    public function update(Request $request, $id)
+    {
+        // Validate the request data
+        $request->validate([
+            'allergy' => 'required|exists:allergies,id',
+            'description' => 'nullable|string',
+            'anaphylactic_risk' => 'required|string|max:50',
+        ]);
+
+        // Update the allergy_per_person record
+        DB::table('allergy_per_person')
+        ->where('person_id', $id)
+            ->update([
+                'allergy_id' => $request->allergy,
+                'description' => $request->description,
+                'anaphylactic_risk' => $request->anaphylactic_risk,
+            ]);
+
+        return redirect()->route('family.detail', ['id' => $id])->with('success', 'Allergy details updated successfully');
+    }
     
 
     
