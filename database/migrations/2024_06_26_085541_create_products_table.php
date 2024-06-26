@@ -22,7 +22,6 @@ class CreateProductsTable extends Migration
             $table->date('Houdbaarheidsdatum');
             $table->string('Omschrijving');
             $table->string('Status');
-            $table->timestamps();
 
             // Assuming you have a categories table and want to set up a foreign key constraint
             $table->foreign('CategorieId')->references('id')->on('categories')->onDelete('cascade');

@@ -22,7 +22,6 @@ class CreateContactTable extends Migration
             $table->string('Woonplaats');
             $table->string('Email');
             $table->string('Mobiel');
-            $table->timestamps();
         });
     }
 

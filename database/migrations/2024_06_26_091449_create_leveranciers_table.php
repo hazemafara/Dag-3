@@ -19,7 +19,6 @@ class CreateLeveranciersTable extends Migration
             $table->string('ContactPerson');
             $table->string('LeverancierNummer');
             $table->string('LeverancierType');
-            $table->timestamps();
         });
     }
 

@@ -19,7 +19,6 @@ class CreateProductPerLeverancierTable extends Migration
             $table->unsignedBigInteger('ProductId');
             $table->date('DatumAangeleverd');
             $table->date('DatumEerstVolgendeLevering');
-            $table->timestamps();
 
             $table->foreign('LeverancierId')->references('id')->on('leveranciers')->onDelete('cascade');
             $table->foreign('ProductId')->references('id')->on('products')->onDelete('cascade');
