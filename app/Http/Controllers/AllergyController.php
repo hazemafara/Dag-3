@@ -99,7 +99,7 @@ public function allergyDetails($id){
 
     public function edit($id)
     {
-        // Assuming $id is the personId passed in the route
+        
         $person = DB::table('people')->where('id', $id)->first();
 
         if (!$person) {
@@ -119,23 +119,23 @@ public function allergyDetails($id){
 
     public function update(Request $request, $id)
     {
-        // Validate the request data
-        $request->validate([
-            'allergy' => 'required|exists:allergies,id',
-            'description' => 'nullable|string',
-            'anaphylactic_risk' => 'required|string|max:50',
-        ]);
+    {
+    
+        // Update the allergy name based on the selected allergy ID
+        $allergy = DB::table('allergies')->where('id', $request->allergy)->first();
 
-        // Update the allergy_per_person record
-        DB::table('allergy_per_person')
-        ->where('person_id', $id)
+        if ($allergy) {
+            DB::table('allergy_per_person')
+            ->where('person_id', $id)
             ->update([
                 'allergy_id' => $request->allergy,
-                'description' => $request->description,
-                'anaphylactic_risk' => $request->anaphylactic_risk,
             ]);
 
-        return redirect()->route('family.detail', ['id' => $id])->with('success', 'Allergy details updated successfully');
+            return redirect()->route('family.detail', ['id' => $id])->with('success', 'Allergy updated successfully');
+        } else {
+            return redirect()->back()->with('error', 'Selected allergy not found');
+        }
+    }
     }
     
 

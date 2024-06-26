@@ -8,31 +8,6 @@
 @else
     <div class="container mt-4">
         <div class="row">
-            <div class="col-md-4">
-                <!-- First Table for Family Name, Description, and Total People -->
-                <table class="table table-bordered table-striped">
-                    <thead class="thead-light">
-                        <tr>
-                            <th>Family Name</th>
-                            <th>Description</th>
-                            <th>Total People</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {{-- Display family info only once --}}
-                        @foreach ($allergyDetails as $index => $detail)
-                            @if ($index == 0) {{-- Display family info only for the first item --}}
-                                <tr>
-                                    <td>{{ $detail->FamilyName }}</td>
-                                    <td>{{ $detail->FamilyDescription }}</td>
-                                    <td>{{ $detail->TotalPeople }}</td>
-                                </tr>
-                            @endif
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-
             <div class="col-md-8">
                 <!-- Second Table for Person Details and Allergies -->
                 <table class="table table-bordered table-striped">
@@ -54,6 +29,31 @@
                                 <td>{{ $detail->AllergyName }}</td>
                                 <td><a href="{{ route('allergy.edit', ['id' => $detail->personId]) }}" class="btn btn-primary btn-sm">Edit</a></td>
                             </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="col-md-4">
+                <!-- First Table for Family Name, Description, and Total People -->
+                <table class="table table-bordered table-striped">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>Family Name</th>
+                            <th>Description</th>
+                            <th>Total People</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{-- Display family info only once --}}
+                        @foreach ($allergyDetails as $index => $detail)
+                            @if ($index == 0) {{-- Display family info only for the first item --}}
+                                <tr>
+                                    <td>{{ $detail->FamilyName }}</td>
+                                    <td>{{ $detail->FamilyDescription }}</td>
+                                    <td>{{ $detail->TotalPeople }}</td>
+                                </tr>
+                            @endif
                         @endforeach
                     </tbody>
                 </table>

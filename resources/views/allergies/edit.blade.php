@@ -1,11 +1,6 @@
 <!-- Include Bootstrap CSS in your layout file -->
 <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-<style>
-    table{
-        right: 0%;
-        left: 100%;
-    }
- </style>   
+
 <div class="container mt-4">
     <h2>Edit Allergy</h2>
     <form action="{{ route('allergy.update', $allergy->id) }}" method="POST">
