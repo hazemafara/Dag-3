@@ -20,20 +20,30 @@
             <th>Representative Name</th>
             <th>Allergy Name</th>
             <th>Allergy Description</th>
+            <!-- Add more headers as needed -->
         </tr>
     </thead>
     <tbody>
-        @foreach($familyDetails as $detail)
+        @if ($familyDetails->isEmpty())
+            <!-- Display a single row with a message if no families match the criteria -->
             <tr>
-                <td>{{ $detail->FamilyName }}</td>
-                <td>{{ $detail->FamilyDescription }}</td>
-                <td>{{ $detail->Adults }}</td>
-                <td>{{ $detail->Kids }}</td>
-                <td>{{ $detail->Babies }}</td>
-                <td>{{ $detail->RepresentativeName }}</td>
-                <td>{{ $detail->AllergyName }}</td>
-                <td>{{ $detail->AllergyDescription }}</td>
+                <td colspan="8">Er zijn geen gezinnen bekend die de geselecteerde allergie hebben.</td>
             </tr>
-        @endforeach
+        @else
+            <!-- Iterate over $familyDetails and display each family's details -->
+            @foreach ($familyDetails as $detail)
+                <tr>
+                    <td>{{ $detail->FamilyName }}</td>
+                    <td>{{ $detail->FamilyDescription }}</td>
+                    <td>{{ $detail->Adults }}</td>
+                    <td>{{ $detail->Kids }}</td>
+                    <td>{{ $detail->Babies }}</td>
+                    <td>{{ $detail->RepresentativeName }}</td>
+                    <td>{{ $detail->AllergyName }}</td>
+                    <td>{{ $detail->AllergyDescription }}</td>
+                    <!-- Add more data cells as needed -->
+                </tr>
+            @endforeach
+        @endif
     </tbody>
 </table>
