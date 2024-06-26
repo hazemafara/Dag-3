@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('persoons', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('gezin_id')->nullable();
+            $table->unsignedBigInteger('gezin_id')->nullable();
             $table->string('voornaam');
             $table->string('tussenvoegsel')->nullable();
             $table->string('achternaam');
@@ -21,6 +21,8 @@ return new class extends Migration
             $table->string('type_persoon');
             $table->boolean('is_vertegenwoordiger')->default(false);
             $table->timestamps();
+
+            $table->foreign('gezin_id')->references('id')->on('gezins')->onDelete('set null');
         });
     }
 
