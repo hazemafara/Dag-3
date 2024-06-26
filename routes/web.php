@@ -18,3 +18,4 @@ Route::get('/', function () {
 });
 
 Route::get('/persoon', [PersoonController::class, 'index'])->name('persoon.index');
+Route::get('/persoon/klant', [PersoonController::class, 'klant'])->name('persoon.klant');

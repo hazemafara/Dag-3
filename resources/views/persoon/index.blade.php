@@ -50,9 +50,10 @@
                     <th>Contact Mobile</th>
                     <th>Straat</th>
                     <th>Huisnummer</th>
-                    <th>Extra Info</th>
+                    <th>Toevoeging</th>
                     <th>Postcode</th>
                     <th>Stad</th>
+                    <th>Klant Details</th>
                 </tr>
             </thead>
             <tbody>
@@ -67,6 +68,7 @@
                         <td>{{ $item->additional_info }}</td>
                         <td>{{ $item->postal_code }}</td>
                         <td>{{ $item->city }}</td>
+                        <td><a href="{{ route('persoon.klant') }}">Details</a></td>
                     </tr>
                 @endforeach
             </tbody>
