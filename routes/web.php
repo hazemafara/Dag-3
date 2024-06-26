@@ -19,3 +19,6 @@ Route::get('/', function () {
 
 Route::get('/persoon', [PersoonController::class, 'index'])->name('persoon.index');
 Route::get('/persoon/klant', [PersoonController::class, 'klant'])->name('persoon.klant');
+Route::get('/persoon/{id}/edit', [PersoonController::class, 'edit'])->name('persoon.edit');
+Route::put('/persoon/{id}', [PersoonController::class, 'update'])->name('persoon.update');
+Route::post('/persoon', [PersoonController::class, 'store'])->name('persoon.edit');
