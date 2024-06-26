@@ -1,3 +1,14 @@
+<form action="{{ route('allergies.index') }}" method="GET">
+    <label for="allergy">Select Allergy:</label>
+    <select name="allergy" id="allergy">
+        <option value="">All Allergies</option>
+        @foreach ($allergies as $allergy)
+            <option value="{{ $allergy->id }}">{{ $allergy->Name }}</option>
+        @endforeach
+    </select>
+    <button type="submit">Filter</button>
+</form>
+
 <table>
     <thead>
         <tr>
