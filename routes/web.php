@@ -20,3 +20,4 @@ Route::get('/', function () {
 
 Route::get('/allergies', [AllergyController::class, 'index'])->name('allergies.index');
 Route::get('/allergies', [AllergyController::class, 'filterByCategory'])->name('allergies.index');
+Route::get('/family/{id}/detail', [AllergyController::class, 'allergyDetails'])->name('family.detail');

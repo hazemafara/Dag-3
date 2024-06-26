@@ -8,7 +8,6 @@
     </select>
     <button type="submit">Filter</button>
 </form>
-
 <table>
     <thead>
         <tr>
@@ -19,8 +18,7 @@
             <th>Babies</th>
             <th>Representative Name</th>
             <th>Allergy Name</th>
-            <th>Allergy Description</th>
-            <!-- Add more headers as needed -->
+            <th>Action</th> <!-- Added column for Action -->
         </tr>
     </thead>
     <tbody>
@@ -30,20 +28,19 @@
                 <td colspan="8">Er zijn geen gezinnen bekend die de geselecteerde allergie hebben.</td>
             </tr>
         @else
-            <!-- Iterate over $familyDetails and display each family's details -->
-            @foreach ($familyDetails as $detail)
-                <tr>
-                    <td>{{ $detail->FamilyName }}</td>
-                    <td>{{ $detail->FamilyDescription }}</td>
-                    <td>{{ $detail->Adults }}</td>
-                    <td>{{ $detail->Kids }}</td>
-                    <td>{{ $detail->Babies }}</td>
-                    <td>{{ $detail->RepresentativeName }}</td>
-                    <td>{{ $detail->AllergyName }}</td>
-                    <td>{{ $detail->AllergyDescription }}</td>
-                    <!-- Add more data cells as needed -->
-                </tr>
-            @endforeach
+     @foreach ($familyDetails as $detail)
+    <tr>
+        <td>{{ $detail->FamilyName }}</td>
+        <td>{{ $detail->FamilyDescription }}</td>
+        <td>{{ $detail->Adults }}</td>
+        <td>{{ $detail->Kids }}</td>
+        <td>{{ $detail->Babies }}</td>
+        <td>{{ $detail->RepresentativeName }}</td>
+        <td>{{ $detail->AllergyName }}</td>
+        <!-- Create a link to a route passing family id -->
+        <td><a href="{{ route('family.detail', ['id' => $detail->FamilyId]) }}">Details</a></td>
+    </tr>
+@endforeach
         @endif
     </tbody>
 </table>

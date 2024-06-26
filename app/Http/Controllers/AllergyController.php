@@ -8,10 +8,11 @@ use Illuminate\Http\Request;
 
 class AllergyController extends Controller
 {
-    public function index(){
-
+    public function index()
+    {
         $familyDetails = DB::table('families')
         ->select(
+            'families.id as FamilyId',
             'families.name as FamilyName',
             'families.description as FamilyDescription',
             'families.amount_adults as Adults',
@@ -28,9 +29,10 @@ class AllergyController extends Controller
             ->leftJoin('allergy_per_person', 'representative.id', '=', 'allergy_per_person.person_id')
             ->leftJoin('allergies', 'allergy_per_person.allergy_id', '=', 'allergies.id')
             ->get();
-        $allergies = Allergy::all(); 
 
-        return view('allergies', ['familyDetails' => $familyDetails, 'allergies' => $allergies]);
+        $allergies = Allergy::all();
+
+        return view('allergies.index', compact('familyDetails', 'allergies'));
     }
     public function filterByCategory(Request $request)
     {
@@ -40,6 +42,7 @@ class AllergyController extends Controller
         // Initialize query to fetch family details
         $query = DB::table('families')
         ->select(
+            'families.id as FamilyId',
             'families.name as FamilyName',
             'families.description as FamilyDescription',
             'families.amount_adults as Adults',
@@ -71,7 +74,27 @@ class AllergyController extends Controller
             'familyDetails' => $familyDetails,
         ]);
     }
+public function allergyDetails($id){
+        $allergyDetails = DB::table('families')
+            ->select(
+                'families.name as FamilyName',
+                'families.description as FamilyDescription',
+                'families.total_amount_people as TotalPeople',
+                'people.FirstName as PersonFirstName',
+                'people.LastName as PersonLastName',
+                'people.PersonType as PersonType',
+                'allergies.Name as AllergyName',
+                'allergies.Description as AllergyDescription'
+            )
+            ->leftJoin('people', 'families.id', '=', 'people.FamilyId')
+            ->leftJoin('allergy_per_person', 'people.id', '=', 'allergy_per_person.person_id')
+            ->leftJoin('allergies', 'allergy_per_person.allergy_id', '=', 'allergies.id')
+            ->where('families.id', $id) // Filter by specific family ID
+            ->orderBy('families.name')
+            ->get();
 
+
+        return view('details', ['allergyDetails' => $allergyDetails]);}
     
 
     
