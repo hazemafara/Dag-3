@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Leverancier;
 use Illuminate\Http\Request;
+use App\Models\Leverancier;
 
 class LeverancierController extends Controller
 {
@@ -21,11 +21,17 @@ class LeverancierController extends Controller
     public function filterByType(Request $request)
     {
         $type = $request->input('type');
+    
         if ($type === 'all') {
-            return redirect()->route('leveranciers.index');
+            // Redirect or display all suppliers
+            $leveranciers = Leverancier::all();
+        } else {
+            // Filter suppliers by type
+            $leveranciers = Leverancier::where('LeverancierType', $type)->get();
         }
-        $leveranciers = Leverancier::where('LeverancierType', $type)->get();
+    
         return view('leveranciers.index', compact('leveranciers'));
     }
+    
 }
 

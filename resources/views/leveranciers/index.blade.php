@@ -23,7 +23,7 @@
         <h1 class="mb-4">Leverancier Overzicht</h1>
 
         <!-- Filter Form -->
-        <form class="form-inline filter-form mb-4" action="{{ route('leveranciers.filterByType') }}" method="GET">
+        <form class="form-inline filter-form mb-4" action="{{ route('leveranciers.filter') }}" method="GET">
             <div class="form-group mr-2">
                 <label for="type" class="mr-2">Selecteer Leverancier Type:</label>
                 <select class="form-control" name="type" id="type">
