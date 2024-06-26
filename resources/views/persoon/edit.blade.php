@@ -107,7 +107,7 @@
         <label for="contact_mobile">Mobiel:</label>
         <input type="text" id="contact_mobile" name="contact_mobile" value="{{ $klant->contact_mobile }}" required>
     
-        <a href="{{ route('persoon.klant') }}"><button type="submit">Opslaan</button></a> 
+        <a href="{{ route('persoon.klant') }}"><button type="submit">Bewerken</button></a> 
 
 </body>
 </html>
