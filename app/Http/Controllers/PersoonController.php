@@ -9,8 +9,11 @@ use App\Models\Persoon;
 
 class PersoonController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+
+        $postalCodes = Contact::select('postal_code')->distinct()->orderBy('postal_code')->get();
+
         $persoon = Contact::select(
             'contacts.id',
             'gezins.naam as gezin_naam',
@@ -25,11 +28,16 @@ class PersoonController extends Controller
         )
             ->join('contact_per_gezins', 'contacts.id', '=', 'contact_per_gezins.contact_id')
             ->join('persoons', 'contact_per_gezins.gezin_id', '=', 'persoons.gezin_id')
-            ->join('gezins', 'contact_per_gezins.gezin_id', '=', 'gezins.id')
-            ->get();
+            ->join('gezins', 'contact_per_gezins.gezin_id', '=', 'gezins.id');
+
+            if ($request->has('postal_code') && !empty($request->postal_code)) {
+                $persoon->where('contacts.postal_code', $request->postal_code);
+            }
+
+            $persoon = $persoon->get();
 
 
-        return view('persoon.index', ['persoon' => $persoon]);
+        return view('persoon.index', ['persoon' => $persoon, 'postalCodes' => $postalCodes, 'selectedPostalCode' => $request->postal_code]);
     }
 
     public function klant()

@@ -68,9 +68,7 @@
     </style>
 </head>
 <body>
-    <form action="{{ route('persoon.edit', ['id' => $klant->id]) }}" method="POST">
-        @csrf
-        @method('PUT')
+    
     
         <label for="voornaam">Voornaam:</label>
         <input type="text" id="voornaam" name="voornaam" value="{{ $klant->voornaam }}" required>
@@ -109,7 +107,7 @@
         <label for="contact_mobile">Mobiel:</label>
         <input type="text" id="contact_mobile" name="contact_mobile" value="{{ $klant->contact_mobile }}" required>
     
-        <button type="submit">Opslaan</button>
-    </form>
+        <a href="{{ route('persoon.klant') }}"><button type="submit">Opslaan</button></a> 
+
 </body>
 </html>

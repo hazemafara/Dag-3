@@ -41,6 +41,7 @@
 </head>
 <body>
     <h1>Klanten</h1>
+    <h2><a href="{{ route('persoon.index') }}">Klanten overzicht</a></h2>
         <table class="table">
             <thead>
                 <tr>
