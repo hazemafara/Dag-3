@@ -1,18 +1,16 @@
 <?php
 
-// Contact.php
-
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Contact extends Model
 {
+    use HasFactory;
     protected $table = 'contact';
 
-    // Optioneel: als je een relatie hebt met een leverancier, kun je dit hier definiëren.
-    public function leverancier()
-    {
-        return $this->belongsTo(Leverancier::class);
-    }
+    protected $fillable = [
+        'Straat', 'Huisnummer', 'Toevoeging', 'Postcode', 'Woonplaats', 'Email', 'Mobiel'
+    ];
 }

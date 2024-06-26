@@ -7,16 +7,35 @@ use App\Models\Leverancier;
 
 class LeverancierController extends Controller
 {
+
+    public function getContactDetails($id)
+    {
+        $leverancier = Leverancier::findOrFail($id);
+        $contactDetails = $leverancier->getContactDetails();
+        
+        return response()->json($contactDetails);
+    }
+
     public function index()
     {
-        $leveranciers = Leverancier::all();
+        $leveranciers = Leverancier::with('contact')->get();
+        
         return view('leveranciers.index', compact('leveranciers'));
     }
 
-    public function show(Leverancier $leverancier)
+    public function show($id)
     {
+        $leverancier = Leverancier::with('products', 'contacts')->find($id);
+    
+        if (!$leverancier) {
+            abort(404); // Or handle the case where leverancier is not found
+        }
+    
         return view('leveranciers.show', compact('leverancier'));
     }
+    
+    
+    
 
     public function filterByType(Request $request)
     {

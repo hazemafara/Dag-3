@@ -14,8 +14,10 @@ class ProductPerLeverancier extends Pivot
         return $this->belongsTo(Leverancier::class, 'LeverancierId', 'id');
     }
 
+    // Define the Product relationship
     public function product()
     {
-        return $this->belongsTo(Product::class, 'ProductId', 'id');
+        return $this->belongsTo(Product::class, 'product_id');
     }
+    
 }

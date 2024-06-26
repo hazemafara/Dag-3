@@ -50,8 +50,11 @@
                         <tr>
                             <th>Naam</th>
                             <th>Contactpersoon</th>
+                            <th>Email</th>
+                            <th>Mobiel</th>
                             <th>Leverancier Nummer</th>
                             <th>Leverancier Type</th>
+                            <th>Product Details</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -59,8 +62,22 @@
                             <tr>
                                 <td>{{ $leverancier->Naam }}</td>
                                 <td>{{ $leverancier->ContactPerson }}</td>
+                                @if($leverancier->contacts->isNotEmpty())
+                                    <!-- Loop through contacts if you want to show all of them -->
+                                    @foreach($leverancier->contacts as $contact)
+                                        <td>{{ $contact->Email }}</td>
+                                        <td>{{ $contact->Mobiel }}</td>
+                                    @endforeach
+                                @else
+                                    <!-- Show placeholder if no contacts are available -->
+                                    <td>No Email</td>
+                                    <td>No Mobile</td>
+                                @endif
                                 <td>{{ $leverancier->LeverancierNummer }}</td>
                                 <td>{{ $leverancier->LeverancierType }}</td>
+                                <td>
+                                    <a href="{{ route('leveranciers.show', $leverancier) }}" class="btn btn-info">Details</a>
+                                </td>
                             </tr>
                         @endforeach
                     </tbody>

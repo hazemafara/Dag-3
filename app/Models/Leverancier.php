@@ -8,18 +8,22 @@ class Leverancier extends Model
 {
     protected $table = 'leverancier';
 
-    // Relatie met producten via product_per_leverancier
-    public function producten()
-    {
-        return $this->belongsToMany(Product::class, 'product_per_leverancier', 'LeverancierId', 'ProductId')
-            ->using(ProductPerLeverancier::class)
-            ->withPivot(['DatumAangeleverd', 'DatumEerstVolgendeLevering']);
-    }
-    
+    protected $fillable = [
+        'Naam', 'ContactPerson', 'LeverancierNummer', 'LeverancierType'
+    ];
 
-    // Relatie met contactgegevens
-    public function contact()
+    public function contactPerLeveranciers()
     {
-        return $this->hasOne(Contact::class, 'leverancier_id');
+        return $this->hasMany(ContactPerLeverancier::class);
+    }
+
+    public function contacts()
+    {
+        return $this->hasManyThrough(Contact::class, ContactPerLeverancier::class, 'leverancier_id', 'id', 'id', 'contact_id');
+    }
+
+    public function products()
+    {
+        return $this->hasMany(Product::class);
     }
 }

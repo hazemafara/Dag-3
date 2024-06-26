@@ -20,7 +20,7 @@ class CreateProductPerLeverancierTable extends Migration
             $table->date('DatumAangeleverd');
             $table->date('DatumEerstVolgendeLevering');
 
-            $table->foreign('LeverancierId')->references('id')->on('leveranciers')->onDelete('cascade');
+            $table->foreign('LeverancierId')->references('id')->on('leverancier')->onDelete('cascade');
             $table->foreign('ProductId')->references('id')->on('products')->onDelete('cascade');
         });
     }
