@@ -1,30 +1,49 @@
-<div class="container">
-        <h1>Edit Product</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Product: {{ $product->name }}</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa; /* Light gray background */
+        }
+        .container {
+            margin-top: 50px; /* Add margin to top of container */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        @if(session('error'))
+            <div class="alert alert-error alert-dismissible fade show" role="alert">
+                {{ session('error') }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        @endif
+        <h1>Edit Product: {{ $product->name }}</h1>
 
-        <form action="{{ route('products.update', ['product' => $product->id]) }}" method="POST">
+        <form method="POST" action="{{ route('products.update', ['product' => $product->id]) }}">
             @csrf
-            @method('PUT') {{-- Use PUT method for updates --}}
+            @method('PUT')
 
             <div class="form-group">
-                <label for="name">Product Name</label>
-                <input type="text" id="name" name="name" value="{{ $product->name }}" class="form-control">
+                <label for="Houdbaarheidsdatum">Expiry Date:</label>
+                <input type="date" id="Houdbaarheidsdatum" name="Houdbaarheidsdatum" class="form-control" value="{{ $product->Houdbaarheidsdatum }}" required>
             </div>
 
-            <div class="form-group">
-                <label for="allergy">Allergy Type</label>
-                <input type="text" id="allergy" name="allergy" value="{{ $product->allergy }}" class="form-control">
-            </div>
-
-            <div class="form-group">
-                <label for="barcode">Barcode</label>
-                <input type="text" id="barcode" name="barcode" value="{{ $product->barcode }}" class="form-control">
-            </div>
-
-            <div class="form-group">
-                <label for="expiry_date">Expiry Date</label>
-                <input type="date" id="expiry_date" name="expiry_date" value="{{ $product->expiry_date }}" class="form-control">
-            </div>
-
-            <button type="submit" class="btn btn-primary">Update Product</button>
+            <button type="submit" class="btn btn-primary">Update Expiry Date</button>
         </form>
     </div>
+
+    <!-- Bootstrap JS and dependencies (optional) -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

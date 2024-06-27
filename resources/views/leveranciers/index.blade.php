@@ -51,36 +51,45 @@
                             <th>Naam</th>
                             <th>Contactpersoon</th>
                             <th>Email</th>
-                            <th>Mobiel</th>
+                            <th>Telefoon</th>
                             <th>Leverancier Nummer</th>
                             <th>Leverancier Type</th>
-                            <th>Product Details</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($leveranciers as $leverancier)
-                            <tr>
-                                <td>{{ $leverancier->Naam }}</td>
-                                <td>{{ $leverancier->ContactPerson }}</td>
-                                @if($leverancier->contacts->isNotEmpty())
-                                    <!-- Loop through contacts if you want to show all of them -->
-                                    @foreach($leverancier->contacts as $contact)
-                                        <td>{{ $contact->Email }}</td>
-                                        <td>{{ $contact->Mobiel }}</td>
-                                    @endforeach
+            @foreach($leveranciers as $leverancier)
+                @if($leverancier->contacts->isEmpty())
+                    <tr>
+                        <td>{{ $leverancier->Naam }}</td>
+                        <td>{{ $leverancier->ContactPerson }}</td>
+                        <td>No contacts found for this leverancier.</td>
+                        <td>No contacts found for this leverancier.</td>
+                        <td>{{ $leverancier->LeverancierNummer }}</td>
+                        <td>{{ $leverancier->LeverancierType }}</td>
+                    </tr>
+                @else
+                    @foreach($leverancier->contacts as $contact)
+                        <tr>
+                            <td>{{ $leverancier->Naam }}</td>
+                            <td>{{ $leverancier->ContactPerson }}</td>
+                            <td>{{ $contact->Email }}</td>
+                            <td>{{ $contact->Mobiel }}</td>
+                            <td>{{ $leverancier->LeverancierNummer }}</td>
+                            <td>{{ $leverancier->LeverancierType }}</td>
+                            <td>
+                                @if ($leverancier->products->isEmpty())
+                                    No products found for this leverancier.
                                 @else
-                                    <!-- Show placeholder if no contacts are available -->
-                                    <td>No Email</td>
-                                    <td>No Mobile</td>
+                                    <a href="{{ route('leveranciers.products', ['leverancier' => $leverancier->id]) }}" class="btn btn-primary btn-sm">View Products</a>
                                 @endif
-                                <td>{{ $leverancier->LeverancierNummer }}</td>
-                                <td>{{ $leverancier->LeverancierType }}</td>
-                                <td>
-                                    <a href="{{ route('leveranciers.show', $leverancier) }}" class="btn btn-info">Details</a>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
+                            </td>
+                        </tr>
+                    @endforeach
+
+                @endif
+            @endforeach
+        </tbody>
                 </table>
             </div>
         @endif

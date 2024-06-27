@@ -4,38 +4,29 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Leverancier;
+use App\Http\Controllers\LeverancierController;
 
 class LeverancierController extends Controller
 {
-
-    public function getContactDetails($id)
-    {
-        $leverancier = Leverancier::findOrFail($id);
-        $contactDetails = $leverancier->getContactDetails();
-        
-        return response()->json($contactDetails);
-    }
-
     public function index()
     {
-        $leveranciers = Leverancier::with('contact')->get();
-        
+        // $leveranciers = Leverancier::with(['products', 'contact'])->get();
+        // return view('leveranciers.index', compact('leveranciers'));
+        $leveranciers = Leverancier::with(['contacts', 'products'])->get();
         return view('leveranciers.index', compact('leveranciers'));
     }
 
-    public function show($id)
+    public function show(Leverancier $leverancier)
     {
-        $leverancier = Leverancier::with('products', 'contacts')->find($id);
-    
-        if (!$leverancier) {
-            abort(404); // Or handle the case where leverancier is not found
-        }
-    
         return view('leveranciers.show', compact('leverancier'));
     }
-    
-    
-    
+
+    public function edit($id)
+    {
+        $leverancier = Leverancier::findOrFail($id);
+        return view('leveranciers.edit', compact('leverancier'));
+    }
+
 
     public function filterByType(Request $request)
     {
@@ -50,6 +41,36 @@ class LeverancierController extends Controller
         }
     
         return view('leveranciers.index', compact('leveranciers'));
+    }
+
+    public function showProducts(Leverancier $leverancier)
+    {
+        $products = $leverancier->products;
+    
+        return view('leveranciers.products', compact('leverancier', 'products'));
+    }
+
+    public function editProduct($id)
+    {
+        $product = Product::findOrFail($id);
+        return view('products.edit', compact('product'));
+    }
+    
+
+    public function updateProduct(Request $request, $product, Leverancier $leverancier)
+    {
+        $product = Product::findOrFail($product);
+
+        $validatedData = $request->validate([
+            'houdbaarheidsdatum' => 'required|date',
+        ]);
+
+        $product->update($validatedData);
+
+        return redirect()->route('leveranciers.products', ['leverancier' => $leverancier])
+        ->with('success', 'De houdbaarheidsdatum is gewijzigd');
+;
+
     }
     
 }
