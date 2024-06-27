@@ -1,38 +1,47 @@
 <?php
 
+// app/Http/Controllers/ProductController.php
+
 namespace App\Http\Controllers;
 
+use App\Models\Leverancier;
+use App\Models\Product;
 use Illuminate\Http\Request;
-use App\Models\Product; // Importeer het Product model als dat nodig is
 
 class ProductController extends Controller
 {
-
-
-    public function index()
+    public function edit($productId)
     {
-        $products = Product::all();
-        return view('products.index', compact('products'));
-    }
+        $product = Product::findOrFail($productId);
 
-    public function show($id)
-    {
-        $product = Product::findOrFail($id);
-        return view('products.show', compact('product'));
-    }
-
-    public function edit($id)
-    {
-        $product = Product::findOrFail($id);
         return view('products.edit', compact('product'));
     }
-
-    public function destroy($id)
+    
+    public function update(Request $request, $productId)
     {
-        $product = Product::findOrFail($id);
-        $product->delete();
-        return redirect()->route('products.index');
-    }
+        try {
+            $validatedData = $request->validate([
+                'Houdbaarheidsdatum' => 'required|date',
+            ]);
+    
+            $product = Product::findOrFail($productId);
+            $product->update($validatedData);
+            $leveranciers = Leverancier::with(['contacts', 'products'])->get();
+            // find the leverancier that has the product
+            $leverancier = $leveranciers->first(function ($leverancier) use ($product) {
+                return $leverancier->products->contains($product);
+            });
 
-    // Jouw controller methoden hier...
+    
+            // Redirect to the 'leveranciers.products' route with the leverancier model instance
+            return redirect()->route('leveranciers.products', ['leverancier' => $leverancier->id])
+                             ->with('success', 'Product updated successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Failed to update product.');
+        }
+    }
+    
+    
+
+    
 }
