@@ -86,6 +86,7 @@ public function allergyDetails($id){
                 'people.FirstName as PersonFirstName',
                 'people.LastName as PersonLastName',
                 'people.PersonType as PersonType',
+            'people.IsRepresentative as IsRepresentative', 
                 'allergies.Name as AllergyName',
                 'allergies.Description as AllergyDescription'
             )

@@ -15,7 +15,7 @@ use App\Http\Controllers\AllergyController;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('home');
 
 
 Route::get('/allergies', [AllergyController::class, 'index'])->name('allergies.index');
