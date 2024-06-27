@@ -43,8 +43,8 @@
         }
     </style>
 <div class="container">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h1 class="header">Overzicht gezinnen met allergieën</h1>
+    <h1 class="header">Overzicht gezinnen met allergieën</h1>
+        <div class="d-flex justify-content-between align-items-center mb-4 float-right">
             <form action="{{ route('allergies.index') }}" method="GET" class="form-inline">
                 <div class="form-group mr-2">
                     <label for="allergy" class="mr-2">Select Allergy:</label>
@@ -55,7 +55,7 @@
                         @endforeach
                     </select>
                 </div>
-                <button type="submit" class="btn btn-primary">Filter</button>
+<button type="submit" class="btn btn-secondary">Toon gezinnen</button>
             </form>
         </div>       <table class="table custom-table">
             <thead>
@@ -73,7 +73,7 @@
                 @if ($familyDetails->isEmpty())
                     <!-- Display a single row with a message if no families match the criteria -->
                     <tr>
-                        <td colspan="7" class="text-center">Er zijn geen gezinnen bekend die de geselecteerde allergie hebben.</td>
+                        <td colspan="7" class="alert alert-warning">Er zijn geen gezinnen bekend die de geselecteerde allergie hebben.</td>
                     </tr>
                 @else
                     <!-- Iterate over $familyDetails and display each family's details -->
@@ -91,8 +91,9 @@
                 @endif
             </tbody>
         </table>
-        <a href="{{ route('home') }}" class="btn btn-primary">Home</a>
-    </div>
+<div class="text-right">
+    <a href="{{ route('home') }}" class="btn btn-primary">Home</a>
+</div>    </div>
 </body>
 </div>
 
