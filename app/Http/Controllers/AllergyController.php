@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Allergy;
 use App\Models\AllergyPerPerson;
 use App\Models\Person;
@@ -10,32 +11,38 @@ use Illuminate\Http\Request;
 
 class AllergyController extends Controller
 {
+    // Display a listing of the resource.
     public function index()
     {
+        // Query to get family details along with their representative and allergies
         $familyDetails = DB::table('families')
-        ->select(
-            'families.id as FamilyId',
-            'families.name as FamilyName',
-            'families.description as FamilyDescription',
-            'families.amount_adults as Adults',
-            'families.amount_kids as Kids',
-            'families.amount_babies as Babies',
-            DB::raw("CONCAT_WS(' ', representative.FirstName, representative.MiddleName, representative.LastName) as RepresentativeName"),
-            'allergies.Name as AllergyName',
-            'allergies.Description as AllergyDescription'
-        )
-        ->leftJoin('people as representative', function ($join) {
-            $join->on('families.id', '=', 'representative.FamilyId')
-            ->where('representative.IsRepresentative', '=', 1);
-        })
+            ->select(
+                'families.id as FamilyId',
+                'families.name as FamilyName',
+                'families.description as FamilyDescription',
+                'families.amount_adults as Adults',
+                'families.amount_kids as Kids',
+                'families.amount_babies as Babies',
+                DB::raw("CONCAT_WS(' ', representative.FirstName, representative.MiddleName, representative.LastName) as RepresentativeName"),
+                'allergies.Name as AllergyName',
+                'allergies.Description as AllergyDescription'
+            )
+            ->leftJoin('people as representative', function ($join) {
+                $join->on('families.id', '=', 'representative.FamilyId')
+                    ->where('representative.IsRepresentative', '=', 1);
+            })
             ->leftJoin('allergy_per_person', 'representative.id', '=', 'allergy_per_person.person_id')
             ->leftJoin('allergies', 'allergy_per_person.allergy_id', '=', 'allergies.id')
             ->get();
 
+        // Fetch all allergies for the dropdown
         $allergies = Allergy::all();
 
+        // Return the view with the fetched data
         return view('allergies.index', compact('familyDetails', 'allergies'));
     }
+
+    // Filter families by allergy category
     public function filterByCategory(Request $request)
     {
         // Fetch all allergies for the dropdown
@@ -43,20 +50,20 @@ class AllergyController extends Controller
 
         // Initialize query to fetch family details
         $query = DB::table('families')
-        ->select(
-            'families.id as FamilyId',
-            'families.name as FamilyName',
-            'families.description as FamilyDescription',
-            'families.amount_adults as Adults',
-            'families.amount_kids as Kids',
-            'families.amount_babies as Babies',
-            DB::raw("CONCAT_WS(' ', representative.FirstName, representative.MiddleName, representative.LastName) as RepresentativeName"),
-            'allergies.Name as AllergyName',
-            'allergies.Description as AllergyDescription'
-        )
+            ->select(
+                'families.id as FamilyId',
+                'families.name as FamilyName',
+                'families.description as FamilyDescription',
+                'families.amount_adults as Adults',
+                'families.amount_kids as Kids',
+                'families.amount_babies as Babies',
+                DB::raw("CONCAT_WS(' ', representative.FirstName, representative.MiddleName, representative.LastName) as RepresentativeName"),
+                'allergies.Name as AllergyName',
+                'allergies.Description as AllergyDescription'
+            )
             ->leftJoin('people as representative', function ($join) {
                 $join->on('families.id', '=', 'representative.FamilyId')
-                ->where('representative.IsRepresentative', '=', 1);
+                    ->where('representative.IsRepresentative', '=', 1);
             })
             ->leftJoin('allergy_per_person', 'representative.id', '=', 'allergy_per_person.person_id')
             ->leftJoin('allergies', 'allergy_per_person.allergy_id', '=', 'allergies.id');
@@ -76,7 +83,11 @@ class AllergyController extends Controller
             'familyDetails' => $familyDetails,
         ]);
     }
-public function allergyDetails($id){
+
+    // Show the details of a specific allergy
+    public function allergyDetails($id)
+    {
+        // Query to get detailed information about a specific allergy
         $allergyDetails = DB::table('families')
             ->select(
                 'families.name as FamilyName',
@@ -86,7 +97,7 @@ public function allergyDetails($id){
                 'people.FirstName as PersonFirstName',
                 'people.LastName as PersonLastName',
                 'people.PersonType as PersonType',
-            'people.IsRepresentative as IsRepresentative', 
+                'people.IsRepresentative as IsRepresentative',
                 'allergies.Name as AllergyName',
                 'allergies.Description as AllergyDescription'
             )
@@ -97,29 +108,36 @@ public function allergyDetails($id){
             ->orderBy('families.name')
             ->get();
 
+        // Return the view with the fetched data
+        return view('details', ['allergyDetails' => $allergyDetails]);
+    }
 
-        return view('details', ['allergyDetails' => $allergyDetails]);}
-
+    // Edit allergy information for a person
     public function edit($id)
     {
-        
+        // Fetch the person by ID
         $person = DB::table('people')->where('id', $id)->first();
 
+        // If person not found, redirect with error
         if (!$person) {
             return redirect()->route('family.index')->with('error', 'Person not found');
         }
 
+        // Fetch the allergy information for the person
         $allergy = DB::table('allergy_per_person')
-        ->join('allergies', 'allergy_per_person.allergy_id', '=', 'allergies.id')
-        ->where('allergy_per_person.person_id', $id)
+            ->join('allergies', 'allergy_per_person.allergy_id', '=', 'allergies.id')
+            ->where('allergy_per_person.person_id', $id)
             ->select('allergies.*')
             ->first();
 
+        // Fetch all allergies for the dropdown
         $allergies = Allergy::all();
 
-        return view('allergies.edit', compact('allergy', 'allergies', 'person'));   
+        // Return the edit view with the fetched data
+        return view('allergies.edit', compact('allergy', 'allergies', 'person'));
     }
 
+    // Update allergy information for a person
     public function update(Request $request, $id)
     {
         // Validate the incoming request data
@@ -130,7 +148,6 @@ public function allergyDetails($id){
         // Perform database operations inside a transaction
         DB::transaction(function () use ($validatedData, $id) {
             // Find the allergy for the selected ID
-            $allergy = Allergy::findOrFail($validatedData['allergy']);
             $persoonId = $id;
 
             // Update the allergy for the person
@@ -142,14 +159,8 @@ public function allergyDetails($id){
         // Get the FamilyId for the person
         $familyId = Person::where('id', $id)->value('FamilyId');
 
-        // Redirect to the family detail page
+        // Redirect to the family detail page with success message
         return redirect()->route('family.detail', ['id' => $familyId])
             ->with('success', 'De wijziging is doorgevoerd');
-    
     }
 }
-    
-    
-
-    
-
