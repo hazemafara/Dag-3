@@ -18,4 +18,8 @@ class DatabaseSeeder extends Seeder
             peopleTableSeeder::class,
         ]);
     }
+    public function run(): void
+    {
+        $this->call(ContactsTableSeeder::class);
+    }
 }
