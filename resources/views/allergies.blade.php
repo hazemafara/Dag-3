@@ -66,7 +66,7 @@
                     <th>Kinderen</th>
                     <th>Babys</th>
                     <th>Vertegenwoordiger</th>
-                    <th>Allergie Details</th> <!-- Action column renamed -->
+                    <th>Allergie Details</th> 
                 </tr>
             </thead>
             <tbody>

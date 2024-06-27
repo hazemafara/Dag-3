@@ -62,9 +62,9 @@
                 <table class="table table-bordered table-striped">
                     <thead class="thead-light">
                         <tr>
-                            <th>Person First Name</th>
-                            <th>Person Last Name</th>
+                            <th> Name</th>
                             <th>Person Type</th>
+                            <th>gezinsrol</th>
                             <th>Allergy Name</th>
                             <th>Action</th>
                         </tr>
@@ -72,10 +72,9 @@
                     <tbody>
                         @foreach ($allergyDetails as $detail)
                             <tr>
-                                <td>{{ $detail->PersonFirstName }}</td>
-                                <td>{{ $detail->PersonLastName }}</td>
+                                <td>{{ $detail->PersonFirstName . $detail->PersonLastName }}</td>
                                 <td>{{ $detail->PersonType }}</td>
-                                <td>{{ $detail->AllergyName }}</td>
+                                <td>{{ $detail->IsRepresentative == 1 ? 'Vertegenwoordiger' : 'Familie lid' }}</td>                                <td>{{ $detail->AllergyName }}</td>
                                 <td><a href="{{ route('allergy.edit', ['id' => $detail->personId]) }}" class="btn btn-primary btn-sm">Edit</a></td>
                             </tr>
                         @endforeach
