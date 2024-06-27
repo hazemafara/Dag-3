@@ -45,18 +45,18 @@
 <div class="container">
     <h1 class="header">Overzicht gezinnen met allergieën</h1>
         <div class="d-flex justify-content-between align-items-center mb-4 float-right">
-            <form action="{{ route('allergies.index') }}" method="GET" class="form-inline">
-                <div class="form-group mr-2">
-                    <label for="allergy" class="mr-2">Select Allergy:</label>
-                    <select name="allergy" id="allergy" class="form-control">
-                        <option value="">All Allergies</option>
-                        @foreach ($allergies as $allergy)
-                            <option value="{{ $allergy->id }}">{{ $allergy->Name }}</option>
-                        @endforeach
-                    </select>
-                </div>
-<button type="submit" class="btn btn-secondary">Toon gezinnen</button>
-            </form>
+           <form action="{{ route('allergies.index') }}" method="GET" class="form-inline">
+    <div class="form-group mr-2">
+        <label for="allergy" class="mr-2">Select Allergy:</label>
+        <select name="allergy" id="allergy" class="form-control">
+            <option value="">All Allergies</option>
+            @foreach ($allergies as $allergy)
+                <option value="{{ $allergy->id }}">{{ $allergy->Name }}</option>
+            @endforeach
+        </select>
+    </div>
+    <button type="submit" class="btn btn-secondary">Toon gezinnen</button>
+</form>
         </div>       <table class="table custom-table">
             <thead>
                 <tr>
